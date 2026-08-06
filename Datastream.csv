@@ -1,0 +1,22 @@
+Pin,Name,Data type,Semantics,Min,Max,Default,Units,Automations
+V0,Temperature,Double,Temperature (Celsius),-40,80,0,°C,None
+V1,Humidity,Integer,Humidity,0,100,0,%,None
+V2,Gas Conecnteration,Double,,0,100000,0,ppm,None
+V3,Water Level,Integer,,0,100,0,%,None
+V4,Ambient Light,Double,Ambient Light,0,100000,0,lx,None
+V5,Distance,Double,Distance / Proximity,0,500,0,cm,None
+V6,Motion Detection,String,,,,Empty,--,None
+V7,Motion LED,Integer,,0,1,0,--,None
+V8,Color,Integer,Color,0,1,1,--,None
+V9,Alarm Status,Integer,,0,1,0,--,None
+V10,System Status,String,,,,,--,None
+V11,Connection Status,String,Connection Status,,,Disconnected,--,None
+V12,Alarm Sound,Integer,,0,1,0,--,None
+V13,Lamp,Integer,Power Switch,0,1,0,--,None
+V14,Mode Selector,Integer,Mode Selector,0,1,0,--,None
+V15,Page Selector,Integer,,1,4,1,--,None
+V16,Servo,Integer,Servo / Motor Position,0,180,0,°,None
+V17,Doorbell,Integer,,0,1,0,--,None
+V18,Connection,Integer,,0,1,0,--,None
+V19,Fan,Integer,,0,1,0,--,None
+V20,Mode Status,String,,,,Auto,--,None
