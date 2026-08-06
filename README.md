@@ -101,6 +101,8 @@ The system connects to the **Blynk IoT Platform** over Wi-Fi and provides:
 
 ## Hardware Components
 
+<img width="922" height="572" alt="Circuit Diagram" src="https://github.com/user-attachments/assets/7955ae1e-d1fd-4000-913d-a573e47f0bc6" />
+
 | Component | Purpose |
 |-----------|---------|
 | **ESP32 Development Board** | Main microcontroller responsible for sensor acquisition, decision making, actuator control, Wi-Fi communication, and Blynk cloud integration. |
@@ -320,6 +322,9 @@ The OLED provides local monitoring without requiring access to the Blynk dashboa
 
 ### Page 1 – System Status
 
+<img width="672" height="552" alt="OLED 1" src="https://github.com/user-attachments/assets/4a24e4a8-3342-4335-91f3-ff6334df254f" />
+
+
 Displays:
 
 - Current System Status
@@ -330,6 +335,9 @@ Displays:
 
 ### Page 2 – Environment
 
+<img width="687" height="545" alt="OLED 2" src="https://github.com/user-attachments/assets/7379be56-0873-4031-8bc8-1f8ab6cfa37d" />
+
+
 Displays:
 
 - Temperature
@@ -338,6 +346,9 @@ Displays:
 ---
 
 ### Page 3 – Occupancy Monitoring
+
+<img width="707" height="555" alt="OLED 3" src="https://github.com/user-attachments/assets/9e95372d-2912-4acb-bee3-cea32da31ec8" />
+
 
 Displays:
 
@@ -349,6 +360,9 @@ Displays:
 
 ### Page 4 – Safety Monitoring
 
+<img width="692" height="556" alt="OLED 4" src="https://github.com/user-attachments/assets/c79b9fae-5965-47c2-a005-73b0550d538f" />
+
+
 Displays:
 
 - Water Level
@@ -359,6 +373,9 @@ Displays:
 ## Blynk Dashboard
 
 The Blynk dashboard provides remote monitoring and manual control of the office.
+
+<img width="1440" height="636" alt="Blynk IOT Web Dashboard" src="https://github.com/user-attachments/assets/e6199c0a-1928-4dae-9bf0-7734f882fb2f" />
+
 
 ### Monitoring Widgets
 
@@ -413,6 +430,12 @@ The Blynk dashboard provides remote monitoring and manual control of the office.
 | V18 | WiFi Connection Indicator |
 | V19 | Fan Control |
 | V20 | Current Operating Mode |
+
+
+<img width="1380" height="581" alt="Datastream V0-V9" src="https://github.com/user-attachments/assets/0c2ac90d-6703-4845-8041-591cfafcfbda" />
+<img width="1450" height="517" alt="Datastream V10-V18" src="https://github.com/user-attachments/assets/8e424ef6-dcb4-407c-b15a-a42901d26698" />
+<img width="1413" height="111" alt="Datastream V19-V20" src="https://github.com/user-attachments/assets/b62a087b-8eb2-4b88-8e6c-c37ffc3c5699" />
+
 
 ---
 
