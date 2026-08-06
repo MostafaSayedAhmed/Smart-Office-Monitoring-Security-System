@@ -98,4 +98,184 @@ The system connects to the **Blynk IoT Platform** over Wi-Fi and provides:
   - Cloud communication
   - User interface
 - Designed and validated entirely using **ESP32**, **MicroPython**, **Wokwi**, and **Blynk**.
-	  	
+
+## Hardware Components
+
+| Component | Purpose |
+|-----------|---------|
+| **ESP32 Development Board** | Main microcontroller responsible for sensor acquisition, decision making, actuator control, Wi-Fi communication, and Blynk cloud integration. |
+| **DHT22 Temperature & Humidity Sensor** | Measures the ambient temperature and humidity of the office environment. |
+| **MQ-2 Gas Sensor** | Detects gas concentration to identify potential gas leakage or hazardous conditions. |
+| **Photoresistor (LDR)** | Measures ambient light intensity (Lux) to enable automatic lighting control. |
+| **PIR Motion Sensor** | Detects human presence to determine room occupancy and support lighting automation. |
+| **HC-SR04 Ultrasonic Sensor** | Measures the distance in front of the office entrance to detect approaching visitors. |
+| **Water Level Sensor (Simulated using a Potentiometer)** | Simulates monitoring the water level of the office water cooler. |
+| **Push Button (Doorbell)** | Simulates a manual doorbell switch for visitor notification. |
+| **Push Button (OLED Navigation)** | Allows switching between the different OLED display pages. |
+| **Relay Module (Fan)** | Controls the office cooling fan. |
+| **Relay Module (Lamp)** | Controls the office lighting system. |
+| **Servo Motor** | Simulates automatic window opening and closing based on system conditions. |
+| **RGB LED** | Indicates the current operating status of the system using different colors. |
+| **Green Status LED** | Indicates normal system operation and cloud connectivity. |
+| **Red Status LED** | Indicates warning or alarm conditions. |
+| **Buzzer** | Generates different sound patterns for the doorbell, warning notifications, and emergency alarms. |
+| **128×64 OLED Display (I²C)** | Displays system status, sensor readings, connectivity information, and multiple user interface pages. |
+
+
+
+## Software Stack
+
+| Technology | Purpose |
+|------------|---------|
+| **MicroPython** | Primary programming language used to develop the embedded application running on the ESP32. |
+| **ESP32** | Target microcontroller platform providing GPIO, ADC, PWM, I²C, and Wi-Fi connectivity. |
+| **Wokwi Simulator** | Simulates the complete hardware circuit, allowing development and testing without physical components. |
+| **Blynk IoT Platform** | Provides remote monitoring, cloud connectivity, and manual control through a web dashboard. |
+| **MicroPython SSD1306 Library** | Controls the 128×64 OLED display over the I²C interface. |
+| **MicroPython DHT Library** | Reads temperature and humidity data from the DHT22 sensor. |
+| **MicroPython `network` Module** | Establishes Wi-Fi connectivity between the ESP32 and the Blynk cloud. |
+| **MicroPython BlynkLib** | Enables communication between the ESP32 and the Blynk IoT platform. |
+| **MicroPython `machine` Module** | Interfaces with ESP32 hardware peripherals such as GPIO, ADC, PWM, I²C, and timers. |
+| **MicroPython `time` Module** | Implements periodic task scheduling and timing using `ticks_ms()`. |
+| **MicroPython `math` Module** | Performs mathematical calculations such as Lux estimation and gas concentration interpolation. |
+
+## System Architecture
+
+## Project Workflow
+
+## Pin Mapping
+### Input Devices
+
+| GPIO Pin | Component | Description |
+|:--------:|-----------|-------------|
+| GPIO 12 | PIR Motion Sensor | Detects human motion and room occupancy. |
+| GPIO 13 | DHT22 Sensor | Measures temperature and humidity. |
+| GPIO 14 | HC-SR04 Echo | Receives the ultrasonic echo signal. |
+| GPIO 26 | OLED Page Button | Switches between OLED information pages. |
+| GPIO 27 | Doorbell Button | Simulates the office doorbell switch. |
+| GPIO 32 | Water Level Sensor *(Potentiometer)* | Simulates the water level of the office water cooler. |
+| GPIO 33 | LDR Sensor | Measures ambient light intensity. |
+| GPIO 35 | MQ-2 Gas Sensor | Measures gas concentration. |
+
+---
+
+### Output Devices
+
+| GPIO Pin | Component | Description |
+|:--------:|-----------|-------------|
+| GPIO 0 | RGB LED (Blue) | Indicates system status. |
+| GPIO 2 | RGB LED (Green) | Indicates system status. |
+| GPIO 4 | Relay (Fan) | Controls the cooling fan. |
+| GPIO 5 | Servo Motor | Controls the office window position. |
+| GPIO 15 | RGB LED (Red) | Indicates system status. |
+| GPIO 16 | Red Status LED | Indicates warning or alarm conditions. |
+| GPIO 17 | Buzzer | Doorbell, warning, and emergency alarm sounds. |
+| GPIO 18 | HC-SR04 Trigger | Sends ultrasonic trigger pulse. |
+| GPIO 19 | Green Status LED | Indicates normal operation and connectivity. |
+
+---
+
+### Communication Interfaces
+
+| GPIO Pin | Interface | Connected Device |
+|:--------:|-----------|------------------|
+| GPIO 21 | I²C SDA | OLED Display |
+| GPIO 22 | I²C SCL | OLED Display |
+
+---
+
+### Summary
+
+| Resource | Usage |
+|----------|------:|
+| Digital Inputs | 4 |
+| Analog Inputs | 3 |
+| Digital Outputs | 3 |
+| PWM Outputs | 5 |
+| I²C Devices | 1 |
+| Wi-Fi | Blynk IoT Cloud |
+
+
+## OLED Pages
+
+## Blynk Dashboard
+
+## System Logic
+
+## Installation
+
+### Prerequisites
+
+Before running this project, make sure you have the following:
+
+- ESP32 Development Board (or Wokwi ESP32 Simulator)
+- MicroPython firmware
+- A Blynk IoT account
+- Wokwi Simulator
+- Internet connection (for Blynk cloud communication)
+
+### Required Libraries
+
+The following MicroPython libraries are used:
+
+- `BlynkLib`
+- `ssd1306`
+- `dht`
+
+The following built-in MicroPython modules are also required:
+
+- `machine`
+- `network`
+- `time`
+- `math`
+
+### Running the Project
+
+1. Clone this repository.
+
+   ```bash
+   git clone https://github.com/<your-username>/Smart-Office-Monitoring-System.git
+   ```
+
+2. Open the project in **Wokwi**.
+
+3. Make sure the required libraries are included in the project.
+
+4. Replace the following credentials with your own Blynk information:
+
+   ```python
+   BLYNK_TEMPLATE_ID = "YOUR_TEMPLATE_ID"
+   BLYNK_TEMPLATE_NAME = "YOUR_TEMPLATE_NAME"
+   BLYNK_AUTH_TOKEN = "YOUR_AUTH_TOKEN"
+   ```
+
+5. Start the simulation.
+
+6. Open the **Blynk Web Dashboard** (or mobile application) to monitor and control the system remotely.
+
+---
+
+### Default Operating Modes
+
+- **Automatic Mode**
+  - Environmental monitoring
+  - Automatic lighting control
+  - Automatic fan control
+  - Automatic window control
+  - Security monitoring
+
+- **Manual Mode**
+  - Remote control through the Blynk dashboard
+  - Manual control of lamp, fan, servo motor, and doorbell
+
+## Running in Wokwi
+
+## Future Improvements
+
+## License
+
+This project is licensed under the **MIT License**.
+
+You are free to use, modify, and distribute this project for educational and personal purposes, provided that the original copyright and license notice are included.
+
+See the [LICENSE](LICENSE) file for more information.
