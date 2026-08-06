@@ -140,8 +140,127 @@ The system connects to the **Blynk IoT Platform** over Wi-Fi and provides:
 | **MicroPython `math` Module** | Performs mathematical calculations such as Lux estimation and gas concentration interpolation. |
 
 ## System Architecture
+The Smart Office Monitoring and Security System follows a layered architecture that separates sensing, processing, actuation, and cloud communication. This modular design simplifies development, debugging, and future expansion.
+
+### 1. Sensor Layer
+
+The sensor layer continuously collects environmental and security data from the office.
+
+**Sensors**
+
+- DHT22 → Temperature and Humidity
+- MQ2 → Gas Concentration
+- LDR → Ambient Light Intensity
+- PIR Sensor → Motion Detection
+- HC-SR04 → Distance Measurement
+- Potentiometer → Water Level Simulation
+- Push Button → Doorbell
+- Push Button → OLED Page Switching
+
+---
+
+### 2. Processing Layer
+
+The ESP32 acts as the main controller of the system.
+
+Responsibilities include:
+
+- Reading all sensors
+- Processing sensor values
+- Comparing readings with predefined thresholds
+- Determining current system status
+- Executing automation logic
+- Handling manual commands from Blynk
+- Updating the OLED display
+- Synchronizing data with the Blynk dashboard
+
+---
+
+### 3. Actuator Layer
+
+The controller drives several output devices depending on the detected conditions.
+
+**Actuators**
+
+- Lamp Relay
+- Fan Relay
+- Servo Motor (Window)
+- RGB LED
+- Green Status LED
+- Red Alarm LED
+- Buzzer
+- OLED Display
+
+---
+
+### 4. Cloud Layer
+
+The Blynk IoT Platform enables remote monitoring and manual control through a web dashboard.
+
+Users can:
+
+- Monitor all sensor readings
+- View system status
+- Switch between Automatic and Manual modes
+- Control the lamp
+- Control the fan
+- Adjust the servo angle
+- Trigger the doorbell remotely
+
+---
 
 ## Project Workflow
+
+The firmware runs continuously using an infinite loop.
+
+```text
+System Start
+      │
+      ▼
+Initialize ESP32
+      │
+      ▼
+Initialize Sensors
+      │
+      ▼
+Connect to WiFi
+      │
+      ▼
+Connect to Blynk Cloud
+      │
+      ▼
+Initialize OLED Display
+      │
+      ▼
+──────── Main Loop ────────
+      │
+      ▼
+Read Sensors
+      │
+      ▼
+Update Sensor Variables
+      │
+      ▼
+Determine Current Mode
+      │
+      ├──────────────┐
+      ▼              ▼
+ Automatic        Manual
+      │              │
+      ▼              ▼
+Evaluate       Execute User
+Logic          Commands
+      │              │
+      └──────┬───────┘
+             ▼
+Update OLED
+             ▼
+Update Blynk Dashboard
+             ▼
+Repeat
+```
+
+---
 
 ## Pin Mapping
 ### Input Devices
@@ -197,10 +316,238 @@ The system connects to the **Blynk IoT Platform** over Wi-Fi and provides:
 
 
 ## OLED Pages
+The OLED provides local monitoring without requiring access to the Blynk dashboard.
+
+### Page 1 – System Status
+
+Displays:
+
+- Current System Status
+- Connection Status
+- Current Operating Mode
+
+---
+
+### Page 2 – Environment
+
+Displays:
+
+- Temperature
+- Humidity
+
+---
+
+### Page 3 – Occupancy Monitoring
+
+Displays:
+
+- Motion Detection
+- Distance Measurement
+- Ambient Light Intensity
+
+---
+
+### Page 4 – Safety Monitoring
+
+Displays:
+
+- Water Level
+- Gas Concentration
+
+---
 
 ## Blynk Dashboard
 
+The Blynk dashboard provides remote monitoring and manual control of the office.
+
+### Monitoring Widgets
+
+- Temperature Gauge
+- Humidity Gauge
+- Gas Concentration Gauge
+- Water Level Gauge
+- Ambient Light Gauge
+- Distance Display
+- Motion Indicator
+- RGB Status Indicator
+- Alarm Indicator
+- System Status
+- Connection Status
+- Operating Mode
+
+---
+
+### Control Widgets
+
+- Lamp Switch
+- Fan Switch
+- Servo Slider
+- Doorbell Button
+- Mode Selector
+- OLED Page Selector
+
+---
+
+### Virtual Datastream Mapping
+
+| Virtual Pin | Purpose |
+|-------------|---------|
+| V0 | Temperature |
+| V1 | Humidity |
+| V2 | Gas Concentration |
+| V3 | Water Level |
+| V4 | Ambient Light |
+| V5 | Distance |
+| V6 | Motion Detection Status |
+| V7 | Motion Indicator |
+| V8 | RGB Status Indicator |
+| V9 | Alarm Indicator |
+| V10 | System Status |
+| V11 | Connection Status |
+| V12 | Alarm Sound |
+| V13 | Lamp Control |
+| V14 | Mode Selector |
+| V15 | OLED Page Selector |
+| V16 | Servo Control |
+| V17 | Doorbell |
+| V18 | WiFi Connection Indicator |
+| V19 | Fan Control |
+| V20 | Current Operating Mode |
+
+---
+
 ## System Logic
+
+The firmware supports two operating modes.
+
+---
+
+### Automatic Mode
+
+In Automatic Mode, the ESP32 continuously monitors sensor readings and automatically controls connected devices.
+
+#### Fire Detection
+
+Condition:
+
+- High Temperature
+- High Gas Concentration
+
+Actions:
+
+- Turn ON Red LED
+- Activate Emergency Alarm
+- Set RGB LED to Red
+- Update System Status
+
+---
+
+#### Gas Leakage Detection
+
+Condition:
+
+- High Gas Concentration
+
+Actions:
+
+- Blink Red LED
+- Activate Warning Buzzer
+- Open Window using Servo Motor
+- Turn Fan ON
+- Set RGB LED to Yellow
+
+---
+
+#### Dark Room Detection
+
+Condition:
+
+- Low Ambient Light
+- Motion Detected
+
+Actions:
+
+- Turn Lamp ON
+- Green LED ON
+- RGB LED becomes Purple
+
+---
+
+#### High Temperature / High Humidity
+
+Condition:
+
+- High Temperature OR High Humidity
+
+Actions:
+
+- Turn Fan ON
+- Green LED ON
+- RGB LED becomes White
+
+---
+
+#### Door Monitoring
+
+Condition:
+
+- Visitor detected within predefined distance
+
+Actions:
+
+- Play Doorbell Tone
+- Blink Green LED
+
+---
+
+#### Water Monitoring
+
+Condition:
+
+- Low Water Level
+
+Actions:
+
+- RGB LED becomes Blue
+
+Otherwise:
+
+- RGB LED becomes Cyan
+
+---
+
+### Manual Mode
+
+Automatic control is disabled.
+
+Users can remotely control:
+
+- Lamp
+- Fan
+- Servo Motor
+- Doorbell
+
+using the Blynk dashboard.
+
+Sensor readings continue to be monitored and displayed.
+
+---
+
+### System Status
+
+The firmware reports one of the following operating states.
+
+| Status | Description |
+|---------|-------------|
+| Healthy | Normal operating conditions |
+| Low Water | Water level below threshold |
+| Dark Room | Low light while room is occupied |
+| Hot Weather | High temperature or humidity |
+| Emergency : Gas | Dangerous gas concentration detected |
+| Emergency : Fire | High temperature and dangerous gas concentration detected |
+| Manual | Manual operating mode |
+
+---
 
 ## Installation
 
@@ -270,8 +617,30 @@ The following built-in MicroPython modules are also required:
 
 ## Running in Wokwi
 
+1. Open the project in Wokwi.
+2. Start the simulation.
+3. Wait for the ESP32 to connect to WiFi.
+4. Open the Blynk dashboard.
+5. Observe live sensor updates.
+6. Test Automatic Mode by changing sensor values.
+7. Switch to Manual Mode using the Blynk dashboard.
+8. Control the lamp, fan, servo motor, and doorbell remotely.
+   
 ## Future Improvements
+   
+### Possible future enhancements include:
 
+- Replace simulated sensors with real hardware modules.
+- Integrate smoke and flame sensors for improved fire detection.
+- Add SMS, Email, or Push Notifications during emergencies.
+- Store historical sensor data in a cloud database.
+- Add user authentication and role-based access.
+- Implement FreeRTOS tasks for concurrent sensor acquisition and control.
+- Improve energy efficiency using sleep modes.
+- Add MQTT support for integration with other IoT platforms.
+- Replace polling with interrupt-based handling for buttons and motion detection.
+- Design a custom PCB for a compact embedded solution.
+  
 ## License
 
 This project is licensed under the **MIT License**.
